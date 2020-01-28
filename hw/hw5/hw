@@ -1,0 +1,67 @@
+Alexander Hay
+ME333 - Mechatronics
+HW 5 - Chapter 2, 3-16
+
+3)   AN4 - analog-to-digital input #4
+   C1IN- - comparator #1  negative input
+     CN6 - change notification #6
+     RB4 - digital i/o port
+
+4) TRISC
+
+5) 00C3
+
+6)     SYSCLK - Clocks CPU at freq range 0-80 MHz.
+        PBCLK - Peripheral Bus Clock, used by peripherals at freq range SYSCLOCK/8,4,2,1.
+      PORTA-G - Allows port to be used as digital i/o ports. PORTB can be used for analog input.
+     Timer1-5 - Counts the pulses of a regular signal to be used as a timer. PIC32 has 5 timers.
+   10-bit ADC - Continuously reads data and assigns value between 0-1023, interpreting 1024 different voltage levels
+    PWM OC1-5 - Pulse Width Modulation, signals that can control motors or be low-pass filtered to create a specified analog voltage output.
+     Data RAM - Volatile memory that is not preserved when powered off, but faster than flash memory
+          PFM - Program Flash Memory, memory that is preserved when powered off. Used to program the PIC32
+          PCM - Prefetch Cache Module, loads next few instructions for the CPU to execute
+
+7) PORTA-PORTG
+
+8) ~0.0031v (~3.1 mV)
+
+9) 256 bytes
+
+10) The width is 128 bits wide because the CPU bandwidth is 32 bits but at 4x the frequency
+
+11) Digital I/O pins can be configured as "open drains", where the pin is connected by an external pull-up resistor to a voltage up to 5.5v
+
+12) Region          HEX, DEC
+       RAM   0x1D000000, 486539264
+     Flash    0x2800000, 41943040
+
+        PIC32 has a 4GB memory map
+
+13)
+  a) REGISTER 28-2: DEVCFG1: DEVICE CONFIGURATION
+  bit 13-12: FPBDIV<1:0>: Peripheral Bus Clock Divisor Default Value bits
+                01 = PBCLK is SYSCLK divided by 2
+
+  b) REGISTER 28-6: WDTCON: WATCHDOG TIMER CONTROL REGISTER
+  bit 15 ON: Watchdog Timer Enable bit (1,2)
+                1 = Enables the WDT if it is not enabled by the device configuration
+
+     bit 6-2 SWDTPS<4:0>: Watchdog Timer Postscale Select bits
+                          10100 = 1:1048576
+
+  c) Register 6-1: OSCCON: Oscillator Control Register
+  bit 14-12 COSC<2:0>: Current Oscillator Selection bits
+                          011 = Primary Oscillator (P OSC ) with PLL module (XTPLL, HSPLL or ECPLL)
+
+14) Pg 30 says "you should not plan to draw more than 200-300 mA or so from the NU32"
+    V=IR, R is unknown
+    V = 5 V
+    I = 300 mA
+    R = 16.6 ohms
+
+15) NU32 provides 3.3V and has a 5V. The plug should provide 6V @ 1A
+
+16) LED1 - pin 58/RF0
+    LED2 - pin 59/RF1
+    BUT1 - pin 55/RD7
+    BUT2 - pin 7/MCLR
