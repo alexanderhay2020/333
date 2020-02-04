@@ -1,15 +1,5 @@
 #include <stdio.h>
-#include <helper.h>
-
-#define MAX_YEARS 100
-#define MAX_MESSAGE_LENGTH 3
-
-typedef struct {
-  double inv0;
-  double growth;
-  int years;
-  double invarray[MAX_YEARS+1];
-} Investment;
+#include "helper.h"
 
 
 void calculateGrowth(Investment *invp){
@@ -23,17 +13,19 @@ void calculateGrowth(Investment *invp){
 
 int getUserInput(Investment *invp){
   int valid;
-  char message[MAX_MESSAGE_LENGTH];
+  char message[MAX_MESSAGE_LENGTH];   // added
 
-  NU32_WriteUART3("Enter investment, growth rate, number of years (up to %d): ", MAX_YEARS);
-
-  NU32_ReadUART3(message, MAX_MESSAGE_LENGTH);
+  NU32_WriteUART3("Enter investment, growth rate, number of years");    // changed from printf
+  NU32_WriteUART3("\r\n");                                              // added
+  NU32_ReadUART3(message, MAX_MESSAGE_LENGTH);                          // added
   sscanf(message, "%lf %lf %d", &(invp->inv0), &(invp->growth), &(invp->years));
-
+  NU32_WriteUART3(message);                                             // added
+  NU32_WriteUART3("\r\n");                                              // added
   valid = (invp->inv0 > 0) && (invp->growth > 0) && (invp->years > 0) && (invp->years <= MAX_YEARS);
 
-  NU32_WriteUART3("Valid input? %d\n", valid);
-
+  // this is being weird
+  // NU32_WriteUART3("Valid input?");
+  // NU32_WriteUART3(valid);
   return(valid);
 }
 
@@ -42,13 +34,13 @@ void sendOutput(double *arr, int yrs){
   int i;
   char outstring[100];
 
-  NU32_WriteUART3("\nRESULTS:\n\n");
+  NU32_WriteUART3("\r\nRESULTS:\r\n");                                  // changed; added return carriage tag
 
   for(i=0; i<=yrs;i++){
-    sprintf(outstring, "Year %3d:   %10.2f\n", i, arr[i]);
+    sprintf(outstring, "Year %3d:   %10.2f\r\n", i, arr[i]);
 
-    NU32_WriteUART3("%s", outstring);
+    NU32_WriteUART3(outstring);                                         // changed from printf
   }
 
-  NU32_WriteUART3("\n");
+  NU32_WriteUART3("\r\n");                                              // added
 }

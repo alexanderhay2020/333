@@ -7331,21 +7331,21 @@ int getUserInput(Investment *invp){
 9d0083c0:	afb00034 	sw	s0,52(sp)
 9d0083c4:	00808021 	move	s0,a0
   int valid;
-  char message[MAX_MESSAGE_LENGTH];
+  char message[MAX_MESSAGE_LENGTH];   // added
 
-  NU32_WriteUART3("Enter investment, growth rate, number of years");
+  NU32_WriteUART3("Enter investment, growth rate, number of years");    // changed from printf
 9d0083c8:	3c049d01 	lui	a0,0x9d01
 9d0083cc:	0f4021cd 	jal	9d008734 <NU32_WriteUART3>
 9d0083d0:	2484a384 	addiu	a0,a0,-23676
 
 9d0083d4 <.LVL2>:
-  NU32_WriteUART3("\r\n");
+  NU32_WriteUART3("\r\n");                                              // added
 9d0083d4:	3c119d01 	lui	s1,0x9d01
 9d0083d8:	0f4021cd 	jal	9d008734 <NU32_WriteUART3>
 9d0083dc:	2624a3b4 	addiu	a0,s1,-23628
 
 9d0083e0 <.LVL3>:
-  NU32_ReadUART3(message, MAX_MESSAGE_LENGTH);
+  NU32_ReadUART3(message, MAX_MESSAGE_LENGTH);                          // added
 9d0083e0:	27a40018 	addiu	a0,sp,24
 9d0083e4:	0f4021b0 	jal	9d0086c0 <NU32_ReadUART3>
 9d0083e8:	24050014 	li	a1,20
@@ -7362,12 +7362,12 @@ int getUserInput(Investment *invp){
 9d008408:	26070004 	addiu	a3,s0,4
 
 9d00840c <.LVL5>:
-  NU32_WriteUART3(message);                     // send message back
+  NU32_WriteUART3(message);                                             // added
 9d00840c:	0f4021cd 	jal	9d008734 <NU32_WriteUART3>
 9d008410:	27a40018 	addiu	a0,sp,24
 
 9d008414 <.LVL6>:
-  NU32_WriteUART3("\r\n");                      // carriage return and newline
+  NU32_WriteUART3("\r\n");                                              // added
 9d008414:	0f4021cd 	jal	9d008734 <NU32_WriteUART3>
 9d008418:	2624a3b4 	addiu	a0,s1,-23628
 
@@ -7388,6 +7388,7 @@ int getUserInput(Investment *invp){
 9d00844c:	2c420064 	sltiu	v0,v0,100
 9d008450:	00001021 	move	v0,zero
 
+  // this is being weird
   // NU32_WriteUART3("Valid input?");
   // NU32_WriteUART3(valid);
   return(valid);
@@ -7464,7 +7465,7 @@ void sendOutput(double *arr, int yrs){
   int i;
   char outstring[100];
 
-  NU32_WriteUART3("\r\nRESULTS:\r\n");
+  NU32_WriteUART3("\r\nRESULTS:\r\n");                                  // changed; added return carriage tag
 9d0084f0:	3c049d01 	lui	a0,0x9d01
 9d0084f4:	0f4021cd 	jal	9d008734 <NU32_WriteUART3>
 9d0084f8:	2484a3c4 	addiu	a0,a0,-23612
@@ -7485,7 +7486,7 @@ void sendOutput(double *arr, int yrs){
 
 9d008520 <.LVL22>:
 
-    NU32_WriteUART3(outstring);
+    NU32_WriteUART3(outstring);                                         // changed from printf
 9d008520:	0f4021cd 	jal	9d008734 <NU32_WriteUART3>
 9d008524:	27a40010 	addiu	a0,sp,16
 
@@ -7493,7 +7494,7 @@ void sendOutput(double *arr, int yrs){
   int i;
   char outstring[100];
 
-  NU32_WriteUART3("\r\nRESULTS:\r\n");
+  NU32_WriteUART3("\r\nRESULTS:\r\n");                                  // changed; added return carriage tag
 
   for(i=0; i<=yrs;i++){
 9d008528:	26100001 	addiu	s0,s0,1
@@ -7502,10 +7503,10 @@ void sendOutput(double *arr, int yrs){
 9d008534:	26310004 	addiu	s1,s1,4
     sprintf(outstring, "Year %3d:   %10.2f\r\n", i, arr[i]);
 
-    NU32_WriteUART3(outstring);
+    NU32_WriteUART3(outstring);                                         // changed from printf
   }
 
-  NU32_WriteUART3("\r\n");
+  NU32_WriteUART3("\r\n");                                              // added
 9d008538:	3c049d01 	lui	a0,0x9d01
 9d00853c:	0f4021cd 	jal	9d008734 <NU32_WriteUART3>
 9d008540:	2484a3b4 	addiu	a0,a0,-23628
@@ -7527,7 +7528,7 @@ int main(void){
 9d008560:	27bdfe48 	addiu	sp,sp,-440
 9d008564:	afbf01b4 	sw	ra,436(sp)
   Investment inv;
-  NU32_Startup(); // cache on, interrupts on, LED/button init, UART init
+  NU32_Startup();                                                       // added
 9d008568:	0f40216b 	jal	9d0085ac <NU32_Startup>
 9d00856c:	00000000 	nop
 
@@ -7552,7 +7553,7 @@ int main(void){
 
 int main(void){
   Investment inv;
-  NU32_Startup(); // cache on, interrupts on, LED/button init, UART init
+  NU32_Startup();                                                       // added
 
   while(getUserInput(&inv)){
 9d008590:	0f4020ed 	jal	9d0083b4 <getUserInput>
