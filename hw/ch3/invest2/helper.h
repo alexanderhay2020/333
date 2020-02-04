@@ -1,8 +1,18 @@
-#ifndef CLEARLINE__H__
-#define CLEARLINE__H__
+#ifndef helper__H__
+#define helper__H__
 
+#define MAX_YEARS 100
+#define MAX_MESSAGE_LENGTH 20
 
-void LCD_Clearline(int ln);
+typedef struct {
+  double inv0;
+  double growth;
+  int years;
+  double invarray[MAX_YEARS+1];
+} Investment;
 
+void calculateGrowth(Investment *invp);
+int getUserInput(Investment *invp);
+void sendOutput(double *arr, int yrs);
 
-#endif // clearline__H__
+#endif // helper__H__
