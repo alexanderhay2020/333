@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "NU32.h"                                                       // added
-#include "helper.h"                                                     // added
+#include "NU32.h"                                                        // added
+#include "calculate.h"                                                          // added
+#include "io.h"                                                          // added
 
 int main(void){
   Investment inv;

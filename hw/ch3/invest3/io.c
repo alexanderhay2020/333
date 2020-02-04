@@ -1,15 +1,6 @@
 #include <stdio.h>
-#include "helper.h"
-
-
-void calculateGrowth(Investment *invp){
-  int i;
-
-  for(i=1; i<= invp->years; i=i+1){
-    invp->invarray[i] = invp->growth * invp->invarray[i-1];
-  }
-}
-
+#include "calculate.h"
+#include "io.h"
 
 int getUserInput(Investment *invp){
   int valid;
