@@ -1,14 +1,18 @@
 #include <stdio.h>
 #define MAX_YEARS 100
+
 typedef struct {
   double inv0;
   double growth;
   int years;
   double invarray[MAX_YEARS+1];
 } Investment;
+
 int getUserInput(Investment *invp);
 void calculateGrowth(Investment *invp);
 void sendOutput(double *arr, int years);
+
+
 int main(void){
   Investment inv;
   while(getUserInput(&inv)){
@@ -18,6 +22,8 @@ int main(void){
   }
   return 0;
 }
+
+
 void calculateGrowth(Investment *invp){
   int i;
 
@@ -25,6 +31,8 @@ void calculateGrowth(Investment *invp){
     invp->invarray[i] = invp->growth * invp->invarray[i-1];
   }
 }
+
+
 int getUserInput(Investment *invp){
   int valid;
   printf("Enter investment, growth rate, number of years (up to %d): ", MAX_YEARS);
@@ -36,6 +44,8 @@ int getUserInput(Investment *invp){
   }
   return(valid);
 }
+
+
 void sendOutput(double *arr, int yrs){
   int i;
   char outstring[100];
