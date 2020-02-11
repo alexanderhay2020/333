@@ -1,0 +1,34 @@
+Defines input/output
+TRIS - Output -> 0
+       Input  -> 1
+
+TRISD = 0
+TRISDbits.TRISD0 = 0
+TRISCLR = 0b00...01
+  (make any 1 bits into 0's)
+
+
+If output (TRISD = 0)
+LAT (latch)
+  when set to 1, it will stay 1 forever (until changed)
+
+To look at port
+if(PORTDbits.RD0){
+  yada
+  }
+
+
+Delay function using core timer
+Core Timer - unsigned 32bit int
+  - adds 1 every other sysclk
+  - 40MHz clock (80MHz/2)
+
+_CP0_ SET_COUNT(0)
+while (_CP0_GET_COUNT() < 20,000,000){    (20 million is 0.5 seconds)
+  yada
+}
+
+107 secs is the longest it can time without rolling over
+
+Trade off between resolution and length of time
+(can use peripheral clocks at slower frequency but you lose resolution)
