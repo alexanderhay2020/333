@@ -15,8 +15,8 @@ int debounce(){
 int main(void){
 
   NU32_Startup();
-  NU32_LED1 = 0; // 0=on, 1=off
-  NU32_LED2 = 0;
+  NU32_LED1 = 1; // 0=on, 1=off
+  NU32_LED2 = 1;
 
   char outstring[100];
   int count = 0;
