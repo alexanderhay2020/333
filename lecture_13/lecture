@@ -1,0 +1,18 @@
+setup Timer2 for 100Hz int
+
+PR2 = ?           // want to maximize
+TCKPS = ?         // need to sort of guess
+if TCKPS = div by 1, PR2 is 800,000 pulses. doesn't work because 800,000 > 65535
+(page 135 or 155, can't see)
+
+set TCKPS to 256
+PR2 then is 3,125 which is smaller than 65535
+
+
+
+PR2 = 3,125
+TMR2 = 0
+T2CONbits.TCKPS = 0b111
+T2CONbits.ON = 1
+
+<interrupt stuff>
