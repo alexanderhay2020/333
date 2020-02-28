@@ -1,0 +1,32 @@
+open loop control
+  guessing/calculating effort
+
+feedback control
+  sense and affect, sensor determines effort
+
+  PID - proportional, integral, derivative control
+    P - effort proportional to error
+    I - effort proportional to duration of error (thermal dump)
+    D - effort proportional to rate of change of error
+
+  Effort is control signal (u)
+
+  u(t) = Kp*e(t) + Ki*integral(e(z),0,t) + Kd * e_dot(t)
+
+  e_dot = (e_now - e_previous)/dt
+
+  derivative amplifies noise
+
+  Kp - determines rise & settling time
+       maintains/sets energy of system
+  Kd - reduce overshoot and oscillation
+       removes energy from system
+  Ki - makes steady state error to zero (potentially unstable)
+       adds energy to system
+
+  rise time ----- time system takes to reach target
+  settling time - time system takes to stabilize
+
+  Add/tune Kp first to get rise time
+  Add/tune Kd to limit overshoot/oscillation, tune until rise time is achieved again
+  Add/tune Ki until SS_error is zero
