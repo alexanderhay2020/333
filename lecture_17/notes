@@ -1,0 +1,16 @@
+read chapter on sensors (ch 21 or 22)
+
+optical encoder has 96 lines
+  96 lines is 1 rotation
+
+optical encoder has 2 LEDs, offset by 45 degrees
+  creates 4 states - quadrature
+  trigger interrupt on rising edge
+  when hi, trigger other rising edge
+
+
+
+read optical sensor
+subtract ~32000
+divide by 96*4
+ans is degrees rotated

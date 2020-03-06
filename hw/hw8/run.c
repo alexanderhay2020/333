@@ -67,7 +67,7 @@ void __ISR(_TIMER_2_VECTOR, IPL5SOFT) Controller(void) { // _TIMER_2_VECTOR = 8
   float unew = 0;
   float u = 0, e = 0;
 
-//  OC1RS = Waveform[counter];      // duty cycle = OC1RS/(PR2+1) = 25%
+  //  OC1RS = Waveform[counter];      // duty cycle = OC1RS/(PR2+1) = 25%
 
   // read ADC value into ISR, using adcval
   adcval = adc_sample_convert(0);
