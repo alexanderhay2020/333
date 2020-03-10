@@ -12,7 +12,7 @@ function client(port)
 %       client('COM3') (PC)
 %
 %   For convenience, you may want to change this so that the port is hardcoded.
-port = '/dev/ttyUSB0'
+port = '/dev/ttyUSB1'
 % Opening COM connection
 if ~isempty(instrfind)
     fclose(instrfind);
@@ -34,7 +34,10 @@ has_quit = false;
 while ~has_quit
     fprintf('PIC32 MOTOR DRIVER INTERFACE\n\n');
     % display the menu options; this list will grow
-    fprintf('     d: Dummy Command    q: Quit\n');
+    fprintf('     a: Read Current (counts)    b: Read Current (mA)\n');
+    fprintf('     c: Read Encoder (counts)    d: Read Encoder (deg)\n');
+    fprintf('     e: Reset Encoder\n');    
+    fprintf('     q: Quit                     x: Test\n');
     % read the user's choice
     selection = input('\nENTER COMMAND: ', 's');
      
@@ -43,13 +46,45 @@ while ~has_quit
     
     % take the appropriate action
     switch selection
-        case 'd'                         % example operation
+        case 'a'
+            % read current ADC counts
+            n = fscanf(mySerial,'%d');   % get the ADC count
+            fprintf('Read: %d\n',n);     % print it to the screen
+            
+        case 'b'
+            % read encoder counts
+            fprintf('prompt\n');    
+            
+        case 'c'
+            counts = fscanf(mySerial,'%d');
+            fprintf('\nThe motor angle is %d counts.\n',counts);
+            
+        case 'd'
+            % read encoder degrees
+            degrees = fscanf(mySerial,'%d');
+            fprintf('\nThe motor angle is %d degrees.\n',degrees);
+        
+        case 'e'
+            % read encoder degrees
+            fprintf('\nEncoder Reset\n');            
+            
+        case 'n'                         % example operation
             n = input('Enter number: '); % get the number to send
             fprintf(mySerial, '%d\n',n); % send the number
             n = fscanf(mySerial,'%d');   % get the incremented number back
             fprintf('Read: %d\n',n);     % print it to the screen
+        
         case 'q'
             has_quit = true;             % exit client
+        
+        case 'x'
+            a = input('Enter number: '); % get the number to send
+            b = input('Enter number: '); % get the number to send
+            fprintf(mySerial, '%d\n', a); % send the numbers
+            fprintf(mySerial, '%d\n', b); % send the numbers
+            n = fscanf(mySerial,'%d');   % get the incremented number back
+            fprintf('Read: %d\n',n);     % print it to the screen
+        
         otherwise
             fprintf('Invalid Selection %c\n', selection);
     end

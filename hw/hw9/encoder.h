@@ -1,5 +1,5 @@
-#include "NU32.h"
 #include <xc.h>
+#include "NU32.h"
 
 #define BUF_SIZE 200
 

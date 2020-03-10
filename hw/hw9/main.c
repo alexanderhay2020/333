@@ -1,6 +1,7 @@
+#include <xc.h>
 #include "NU32.h"          // config bits, constants, funcs for startup and UART
 #include "encoder.h"
-#include <xc.h>
+#include "isense.h"
 
 #define BUF_SIZE 200
 
@@ -10,9 +11,13 @@ int main()
   NU32_Startup(); // cache on, min flash wait, interrupts on, LED/button init, UART init
   NU32_LED1 = 1;  // turn off the LEDs
   NU32_LED2 = 1;
+
   __builtin_disable_interrupts();
-  // in future, initialize modules or peripherals here
+  encoder_init();
+
+
   __builtin_enable_interrupts();
+
 
   while(1)
   {
