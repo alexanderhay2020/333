@@ -1,4 +1,6 @@
-#include <xc.h>
-#include "NU32.h"          // config bits, constants, funcs for startup and UART
-#include "encoder.h"
-#include "isense.h"
+#ifndef utilities__H__
+#define utilities__H__
+
+void get_mode(int);
+
+#endif // utilities__H__

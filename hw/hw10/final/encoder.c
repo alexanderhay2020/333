@@ -1,5 +1,7 @@
 #include <xc.h>
+#include <stdio.h>
 #include "NU32.h"
+#include "encoder.h"
 
 #define BUF_SIZE 200
 
@@ -15,6 +17,7 @@ static int encoder_command(int read){
 
 
 int encoder_counts(void) {
+  // encoder_command(1);
   return encoder_command(1);
 }
 
@@ -38,8 +41,8 @@ void encoder_init(void) {
 }
 
 
-float degree(void){
+int degree(void){
   int count = 360*(encoder_counts() - 32768);
-  float deg = count/1792;
+  int deg = count/384;
   return deg;
 }

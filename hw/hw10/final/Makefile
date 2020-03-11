@@ -1,7 +1,7 @@
 XC32PATH=/opt/microchip/xc32/v2.30/bin
 HARMONYPATH=/opt/microchip/mplabx/v5.30
 NU32PATH=/home/alex/school/333/hw/hw4/PIC32
-PORT=/dev/ttyUSB1
+PORT=/dev/ttyUSB0
 TERMEMU=screen
 
 #This file is used to:

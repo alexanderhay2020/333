@@ -4,7 +4,7 @@
 #include "encoder.h"
 #include "isense.h"
 
-#define BUF_SIZE 200
+#define BUF_SIZE 20
 
 int main() {
   char buffer[BUF_SIZE];
@@ -29,6 +29,7 @@ int main() {
       }
 
       case 'c': {                           // read encoder counts
+        int blah = encoder_counts();
         sprintf(buffer, "%d\r\n", encoder_counts());  // encoder_counts is in encoder.c
         NU32_WriteUART3(buffer);            // send encoder count to client
         break;
@@ -57,6 +58,10 @@ int main() {
 
       case 'q': {
         // handle q for quit. Later you may want to return to IDLE mode here.
+        break;
+      }
+
+      case 'r': {
         break;
       }
 

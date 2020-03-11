@@ -12,7 +12,7 @@ function client(port)
 %       client('COM3') (PC)
 %
 %   For convenience, you may want to change this so that the port is hardcoded.
-port = '/dev/ttyUSB1'
+port = '/dev/ttyUSB0'
 % Opening COM connection
 if ~isempty(instrfind)
     fclose(instrfind);
@@ -37,6 +37,7 @@ while ~has_quit
     fprintf('     a: Read Current (counts)    b: Read Current (mA)\n');
     fprintf('     c: Read Encoder (counts)    d: Read Encoder (deg)\n');
     fprintf('     e: Reset Encoder\n');    
+    fprintf('     r: Get mode\n');
     fprintf('     q: Quit                     x: Test\n');
     % read the user's choice
     selection = input('\nENTER COMMAND: ', 's');
@@ -52,7 +53,7 @@ while ~has_quit
             fprintf('Read: %d\n',n);     % print it to the screen
             
         case 'b'
-            % read encoder counts
+            % read current mA
             fprintf('prompt\n');    
             
         case 'c'
@@ -73,7 +74,11 @@ while ~has_quit
             fprintf(mySerial, '%d\n',n); % send the number
             n = fscanf(mySerial,'%d');   % get the incremented number back
             fprintf('Read: %d\n',n);     % print it to the screen
-        
+        case 'r'                         % example operation
+            n = input('Enter number: '); % get the number to send
+            fprintf(mySerial, '%d\n',n); % send the number
+            n = fscanf(mySerial,'%d');   % get the incremented number back
+            fprintf('Read: %d\n',n);     % print it to the screen
         case 'q'
             has_quit = true;             % exit client
         
