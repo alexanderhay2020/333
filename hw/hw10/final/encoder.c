@@ -42,7 +42,6 @@ void encoder_init(void) {
 
 
 int degree(void){
-  int count = 360*(encoder_counts() - 32768);
-  int deg = count/384;
+  int deg = (360*(encoder_counts() - 32768))/384;
   return deg;
 }

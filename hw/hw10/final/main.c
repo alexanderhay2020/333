@@ -1,21 +1,31 @@
 #include <xc.h>
 #include <stdio.h>
 #include "NU32.h"                           // config bits, constants, funcs for startup and UART
+#include "utilities.h"
 #include "encoder.h"
 #include "isense.h"
+#include "currentcontrol.h"
 
 #define BUF_SIZE 20
 
 int main() {
+
+  extern volatile modes MODE;
   char buffer[BUF_SIZE];
+
   NU32_Startup();                           // cache on, min flash wait, interrupts on, LED/button init, UART init
   NU32_LED1 = 1;                            // turn off the LEDs
   NU32_LED2 = 1;
 
+
   __builtin_disable_interrupts();
+
   encoder_init();
   ADC_init();
+  PWM_init();
+
   __builtin_enable_interrupts();
+
 
   while(1) {
     NU32_ReadUART3(buffer,BUF_SIZE);        // we expect the next character to be a menu command
@@ -62,6 +72,7 @@ int main() {
       }
 
       case 'r': {
+        get_mode(MODE);
         break;
       }
 

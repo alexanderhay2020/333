@@ -1,6 +1,17 @@
 #ifndef utilities__H__
 #define utilities__H__
 
-void get_mode(int);
+typedef enum {
+  IDLE,
+  PWM,
+  ITEST,
+  HOLD,
+  TRACK
+} modes;
+
+
+volatile modes MODE;
+
+void get_mode(modes);
 
 #endif // utilities__H__

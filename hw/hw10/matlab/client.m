@@ -23,7 +23,7 @@ fprintf('Opening port %s....\n',port);
 
 % settings for opening the serial port. baud rate 230400, hardware flow control
 % wait up to 120 seconds for data before timing out
-mySerial = serial(port, 'BaudRate', 230400, 'FlowControl', 'hardware','Timeout',120); 
+mySerial = serial(port, 'BaudRate', 230400, 'Timeout',10); 
 % opens serial connection
 fopen(mySerial);
 % closes serial port when function exits
@@ -34,7 +34,11 @@ has_quit = false;
 while ~has_quit
     fprintf('PIC32 MOTOR DRIVER INTERFACE\n\n');
     % display the menu options; this list will grow
-    fprintf('     d: Dummy Command    q: Quit\n');
+    fprintf('     a: Read Current (counts)    b: Read Current (mA)\n');
+    fprintf('     c: Read Encoder (counts)    d: Read Encoder (deg)\n');
+    fprintf('     e: Reset Encoder\n');    
+    fprintf('     r: Get mode\n');
+    fprintf('     q: Quit                     x: Test\n');
     % read the user's choice
     selection = input('\nENTER COMMAND: ', 's');
      
@@ -43,13 +47,50 @@ while ~has_quit
     
     % take the appropriate action
     switch selection
-        case 'd'                         % example operation
+        case 'a'
+            % read current ADC counts
+            n = fscanf(mySerial,'%d');   % get the ADC count
+            fprintf('\nADC current: %d counts\n',n);     % print it to the screen
+            
+        case 'b'
+            % read current mA
+            current = fscanf(mySerial,'%d');
+            fprintf('\nADC current: %d mA\n',current);    
+            
+        case 'c'
+            counts = fscanf(mySerial,'%d');
+            fprintf('\nMotor angle: %d counts.\n',counts);
+            
+        case 'd'
+            % read encoder degrees
+            degrees = fscanf(mySerial,'%d');
+            fprintf('\nMotor angle: %d degrees.\n',degrees);
+        
+        case 'e'
+            % read encoder degrees
+            fprintf('\nEncoder Reset\n');            
+            
+        case 'n'                         % example operation
             n = input('Enter number: '); % get the number to send
             fprintf(mySerial, '%d\n',n); % send the number
             n = fscanf(mySerial,'%d');   % get the incremented number back
             fprintf('Read: %d\n',n);     % print it to the screen
+        
+        case 'r'                         % example operation
+            mode = fscanf(mySerial,'%c');
+            fprintf('%c',mode);
+        
         case 'q'
             has_quit = true;             % exit client
+        
+        case 'x'
+            a = input('Enter number: '); % get the number to send
+            fprintf(mySerial, '%d\n', a); % send the numbers
+            b = input('Enter number: '); % get the number to send
+            fprintf(mySerial, '%d\n', b); % send the numbers
+            n = fscanf(mySerial,'%d');   % get the incremented number back
+            fprintf('Read: %d\n',n);     % print it to the screen
+        
         otherwise
             fprintf('Invalid Selection %c\n', selection);
     end
