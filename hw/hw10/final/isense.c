@@ -1,6 +1,10 @@
-#include "NU32.h"
+#include <xc.h>
 #include <stdio.h>
+#include "NU32.h"                           // config bits, constants, funcs for startup and UART
+#include "utilities.h"
+#include "encoder.h"
 #include "isense.h"
+#include "currentcontrol.h"
 
 
 void ADC_init(void) {
@@ -11,6 +15,7 @@ void ADC_init(void) {
 
 
 unsigned int adc_sample_convert(int pin) { // sample & convert the value on the given
+
   unsigned int elapsed_time = 0;
   unsigned int finish_time = 0;
   AD1CHSbits.CH0SA = pin;                // connect chosen pin to MUXA for sampling

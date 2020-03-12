@@ -24,6 +24,7 @@ int main() {
   ADC_init();
   PWM_init();
 
+  MODE = IDLE;
   __builtin_enable_interrupts();
 
 
@@ -32,16 +33,22 @@ int main() {
     NU32_LED2 = 1;                          // clear the error LED
     switch (buffer[0]) {
 
-      case 'a': {                           // read encoder counts
-        sprintf(buffer,"%d", read_adc());
-        NU32_WriteUART3(buffer);            // send encoder count to client
+      case 'a': {                           // read current counts
+        sprintf(buffer,"%d\r\n", read_adc());
+        NU32_WriteUART3(buffer);
+        break;
+      }
+
+      case 'b': {                           // read current mA
+        sprintf(buffer,"%d\r\n", current());
+        NU32_WriteUART3(buffer);
         break;
       }
 
       case 'c': {                           // read encoder counts
         int blah = encoder_counts();
-        sprintf(buffer, "%d\r\n", encoder_counts());  // encoder_counts is in encoder.c
-        NU32_WriteUART3(buffer);            // send encoder count to client
+        sprintf(buffer, "%d\r\n", encoder_counts());
+        NU32_WriteUART3(buffer);
         break;
       }
 
@@ -51,8 +58,8 @@ int main() {
         break;
       }
 
-      case 'e': {                           // read encoder degrees
-        sprintf(buffer, "%d\r\n", encoder_reset());  // encoder_counts is in encoder.c
+      case 'e': {                           // reset encoder
+        sprintf(buffer, "%d\r\n", encoder_reset());
         NU32_WriteUART3(buffer);
         break;
       }
@@ -61,17 +68,17 @@ int main() {
         int n = 0;
         NU32_ReadUART3(buffer,BUF_SIZE);
         sscanf(buffer, "%d", &n);
-        sprintf(buffer,"%d\r\n", n + 1);    // return the number + 1
+        sprintf(buffer,"%d\r\n", n + 1);
         NU32_WriteUART3(buffer);
         break;
       }
 
-      case 'q': {
-        // handle q for quit. Later you may want to return to IDLE mode here.
+      case 'q': {                           // quit
+        MODE = IDLE;
         break;
       }
 
-      case 'r': {
+      case 'r': {                           // returns mode
         get_mode(MODE);
         break;
       }

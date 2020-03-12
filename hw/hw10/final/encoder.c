@@ -1,7 +1,10 @@
 #include <xc.h>
 #include <stdio.h>
-#include "NU32.h"
+#include "NU32.h"                           // config bits, constants, funcs for startup and UART
+#include "utilities.h"
 #include "encoder.h"
+#include "isense.h"
+#include "currentcontrol.h"
 
 #define BUF_SIZE 200
 
@@ -17,7 +20,7 @@ static int encoder_command(int read){
 
 
 int encoder_counts(void) {
-  // encoder_command(1);
+  encoder_command(1);
   return encoder_command(1);
 }
 
