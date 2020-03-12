@@ -6,7 +6,7 @@
 #include "isense.h"
 #include "currentcontrol.h"
 
-static volatile int DC;
+static volatile int duty_cycle;
 static volatile int counter = 0;        // initialize counter once
 static volatile int Waveform[NUMSAMPS]; // waveform
 
@@ -43,21 +43,21 @@ void __ISR(_TIMER_2_VECTOR, IPL3SOFT) Controller(void) { // _TIMER_2_VECTOR = 8
 
   switch (MODE) {
     case IDLE: {
-      DC = 0;
+      duty_cycle = 0;
       OC1RS = 0;
       LATDbits.LATD11 = 0;
       break;
     }
 
     case PWM: {
-      if (DC < 0){
+      if (duty_cycle < 0){
         LATDbits.LATD11 = 1;
       }
 
       else {
         LATDbits.LATD11 = 0;
       }
-      OC1RS = 40 * abs(DC);
+      OC1RS = 40 * abs(duty_cycle);
       break;
     }
   }

@@ -36,7 +36,7 @@ while ~has_quit
     % display the menu options; this list will grow
     fprintf('     a: Read Current (counts)    b: Read Current (mA)\n');
     fprintf('     c: Read Encoder (counts)    d: Read Encoder (deg)\n');
-    fprintf('     e: Reset Encoder            f: Set PWM (-100 to 100)\n');    
+    fprintf('     e: Reset Encoder'         f: );    
     fprintf('     r: Get mode\n');
     fprintf('     q: Quit                     x: Test\n');
     % read the user's choice
