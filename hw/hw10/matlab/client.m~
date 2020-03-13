@@ -12,7 +12,7 @@ function client(port)
 %       client('COM3') (PC)
 %
 %   For convenience, you may want to change this so that the port is hardcoded.
-port = '/dev/ttyUSB0'
+port = '/dev/ttyUSB1'
 % Opening COM connection
 if ~isempty(instrfind)
     fclose(instrfind);
@@ -36,8 +36,8 @@ while ~has_quit
     % display the menu options; this list will grow
     fprintf('     a: Read Current (counts)    b: Read Current (mA)\n');
     fprintf('     c: Read Encoder (counts)    d: Read Encoder (deg)\n');
-    fprintf('     e: Reset Encoder'         f: );    
-    fprintf('     r: Get mode\n');
+    fprintf('     e: Reset Encoder            f: Set PWM (-100 to 100)\n');    
+    fprintf('     r: Get mode                 p: Unpower Motor\n');
     fprintf('     q: Quit                     x: Test\n');
     % read the user's choice
     selection = input('\nENTER COMMAND: ', 's');
@@ -72,7 +72,7 @@ while ~has_quit
             
         case 'f'
             % send PWM
-            duty_cycle = input('\nEnter Duty cycle [-100 to 100] = ');
+            duty_cycle = input('\nEnter Duty cycle [-100 to 100]\n');
             fprintf(mySerial,'%d\n',duty_cycle);
             
         case 'n'                         % example operation
@@ -81,7 +81,11 @@ while ~has_quit
             n = fscanf(mySerial,'%d');   % get the incremented number back
             fprintf('Read: %d\n',n);     % print it to the screen
         
-        case 'r'                         % example operation
+        case 'p'                         
+            mode = fscanf(mySerial,'%c');
+            fprintf('Motor );
+           
+        case 'r'                        
             mode = fscanf(mySerial,'%c');
             fprintf('%c',mode);
         
