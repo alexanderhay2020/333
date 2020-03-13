@@ -34,7 +34,8 @@ void PWM_init(){
   T3CONbits.ON = 1;               // turn on Timer3
   OC1CONbits.ON = 1;              // turn on OC1
 
-  TRISDbits.TRISD0 = 0;
+  TRISDbits.TRISD0 = 0;           // make D0 an output
+  TRISDbits.TRISD4 = 0;
   TRISDbits.TRISD11 = 0;
 }
 
@@ -50,15 +51,31 @@ void __ISR(_TIMER_2_VECTOR, IPL3SOFT) Controller(void) { // _TIMER_2_VECTOR = 8
     }
 
     case PWM: {
+
       if (duty_cycle < 0){
-        LATDbits.LATD11=0;
+        // duty_cycle = duty_cycle*-1;
+        OC1RS = -40 * duty_cycle;
+        LATDbits.LATD11 = 1;
+        LATDbits.LATD4 = 1;       // reverse
       }
 
-      else {
-        LATDbits.LATD11=1;
+      // if (duty_cycle > 100){
+      //   duty_cycle = 100;
+      // }
+
+      if (duty_cycle >= 0){
+        LATDbits.LATD4 = 0;       // forward
+        LATDbits.LATD11 = 1;         
+        OC1RS = 40 * duty_cycle;
+        // LATDbits.LATD11=1;
       }
-      // sync duty_cycle
-      OC1RS = 40 * abs(duty_cycle);
+
+      // else {
+      //   LATDbits.LATD11=1;
+
+      // }
+      // sync duty
+
       break;
     }
   }
