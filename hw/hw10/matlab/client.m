@@ -12,7 +12,7 @@ function client(port)
 %       client('COM3') (PC)
 %
 %   For convenience, you may want to change this so that the port is hardcoded.
-port = '/dev/ttyUSB1'
+port = '/dev/ttyUSB0'
 % Opening COM connection
 if ~isempty(instrfind)
     fclose(instrfind);
@@ -36,7 +36,8 @@ while ~has_quit
     % display the menu options; this list will grow
     fprintf('     a: Read Current (counts)    b: Read Current (mA)\n');
     fprintf('     c: Read Encoder (counts)    d: Read Encoder (deg)\n');
-    fprintf('     e: Reset Encoder            f: Set PWM (-100 to 100)\n');    
+    fprintf('     e: Reset Encoder            f: Set PWM (-100 to 100)\n'); 
+    fprintf('     g: Set Current Gains        h: Get Current Gains\n');
     fprintf('     r: Get mode                 p: Unpower Motor\n');
     fprintf('     q: Quit                     x: Test\n');
     % read the user's choice
@@ -74,6 +75,16 @@ while ~has_quit
             % send PWM
             duty_cycle = input('\nEnter Duty cycle [-100 to 100]\n');
             fprintf(mySerial,'%d\n',duty_cycle);
+            
+        case 'g'
+            % set current gain
+            kI = input('\nSet Current Gains\n');
+            fprintf(mySerial,'%d\n',kI);
+            
+        case 'h'
+            % get current gain
+            kI= fscanf(mySerial,'%d');
+            fprintf('%d\n',kI);
             
         case 'n'                         % example operation
             n = input('Enter number: '); % get the number to send

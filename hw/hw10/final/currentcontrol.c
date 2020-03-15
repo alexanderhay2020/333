@@ -6,10 +6,10 @@
 #include "isense.h"
 #include "currentcontrol.h"
 
-extern volatile int duty_cycle;
 static volatile int counter = 0;        // initialize counter once
 static volatile int Waveform[NUMSAMPS]; // waveform
-
+extern volatile int duty_cycle;
+extern volatile int kI;
 
 void PWM_init(){
 
@@ -65,7 +65,7 @@ void __ISR(_TIMER_2_VECTOR, IPL3SOFT) Controller(void) { // _TIMER_2_VECTOR = 8
 
       if (duty_cycle >= 0){
         LATDbits.LATD4 = 0;       // forward
-        LATDbits.LATD11 = 1;         
+        LATDbits.LATD11 = 1;
         OC1RS = 40 * duty_cycle;
         // LATDbits.LATD11=1;
       }

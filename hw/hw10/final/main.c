@@ -13,6 +13,7 @@ int main() {
   char buffer[BUF_SIZE];
   extern volatile modes MODE;
   extern volatile int duty_cycle;
+  extern volatile int kI;
 
 
   NU32_Startup();                           // cache on, min flash wait, interrupts on, LED/button init, UART init
@@ -70,6 +71,20 @@ int main() {
         MODE = PWM;
         NU32_ReadUART3(buffer,BUF_SIZE);
         sscanf(buffer, "%d", &duty_cycle);
+        break;
+      }
+
+      case 'g': {                           // set current gain
+        MODE = ITEST;
+        NU32_ReadUART3(buffer,BUF_SIZE);
+        sscanf(buffer, "%d", &kI);
+        break;
+      }
+
+      case 'h': {                           // get current gain
+        MODE = ITEST;
+        sprintf(buffer,"%d\r\n", kI);
+        NU32_WriteUART3(buffer);
         break;
       }
 

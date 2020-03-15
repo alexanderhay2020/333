@@ -38,7 +38,7 @@ int main(void){
 
   NU32_Startup();                 // cache on, interrupts on, LED/button init, UART init
 
-  TRISDbits.TRISD0 = 0;           // make D1 an output
+  TRISDbits.TRISD0 = 0;           // make D0 an output
 
   makeWaveform();
 
