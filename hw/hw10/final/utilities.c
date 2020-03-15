@@ -21,21 +21,21 @@ void get_mode(modes m){
       break;
     }
 
-    case ITEST: {                           // read encoder degrees
+    case ITEST: {
       sprintf(buffer,"Mode set: ITEST\r\n");
-      NU32_WriteUART3(buffer);            // send encoder count to client
+      NU32_WriteUART3(buffer);
       break;
     }
 
-    case HOLD: {                           // read encoder degrees
+    case HOLD: {
       sprintf(buffer,"Mode set: HOLD\r\n");
-      NU32_WriteUART3(buffer);            // send encoder count to client
+      NU32_WriteUART3(buffer);
       break;
     }
 
-    case TRACK: {                           // dummy command for demonstration purposes
+    case TRACK: {
       sprintf(buffer,"Mode set: TRACK\r\n");
-      NU32_WriteUART3(buffer);            // send encoder count to client
+      NU32_WriteUART3(buffer);          
       break;
     }
   }

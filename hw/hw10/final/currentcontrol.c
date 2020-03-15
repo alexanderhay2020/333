@@ -6,10 +6,19 @@
 #include "isense.h"
 #include "currentcontrol.h"
 
-static volatile int counter = 0;        // initialize counter once
-static volatile int Waveform[NUMSAMPS]; // waveform
 extern volatile int duty_cycle;
-extern volatile int kI;
+extern volatile int k_I;
+
+static volatile int counter = 0;        // initialize counter once
+static volatile int I;
+static volatile int e = 0;
+static volatile int e_int = 0;
+static volatile int StoringData = 0;    // if this flag = 1, currently storing plot data
+
+static volatile int Waveform[NUMSAMPS]; // waveform
+static volatile int I_array[NUMSAMPS];  // measured values to plot
+static volatile int REFarray[NUMSAMPS];  // reference values to plot
+
 
 void PWM_init(){
 
@@ -42,6 +51,8 @@ void PWM_init(){
 
 void __ISR(_TIMER_2_VECTOR, IPL3SOFT) Controller(void) { // _TIMER_2_VECTOR = 8
 
+  static int var = 0;
+
   switch (MODE) {
     case IDLE: {
       duty_cycle = 0;
@@ -51,37 +62,48 @@ void __ISR(_TIMER_2_VECTOR, IPL3SOFT) Controller(void) { // _TIMER_2_VECTOR = 8
     }
 
     case PWM: {
-
       if (duty_cycle < 0){
-        // duty_cycle = duty_cycle*-1;
+        if (duty_cycle < -100){
+          duty_cycle = -100;
+        }
         OC1RS = -40 * duty_cycle;
         LATDbits.LATD11 = 1;
         LATDbits.LATD4 = 1;       // reverse
       }
 
-      // if (duty_cycle > 100){
-      //   duty_cycle = 100;
-      // }
-
       if (duty_cycle >= 0){
+        if (duty_cycle > 100){
+          duty_cycle = 100;
+        }
         LATDbits.LATD4 = 0;       // forward
         LATDbits.LATD11 = 1;
         OC1RS = 40 * duty_cycle;
-        // LATDbits.LATD11=1;
       }
-
-      // else {
-      //   LATDbits.LATD11=1;
-
-      // }
-      // sync duty
-
       break;
     }
+
+    case ITEST: {
+      I = current();
+      e = Waveform[counter] - I;
+      e_int += e;
+
+      if (StoringData) {
+
+        I_array[counter] = I;   // store data in global arrays
+        REFarray[counter] = Waveform[counter];
+        counter++;                    // increment plot data index
+
+        if (counter == NUMSAMPS) {       // if max number of plot points plot is reached,
+          counter = 0;                  // reset the plot index
+          StoringData = 0;              // tell main data is ready to be sent to MATLAB
+        }
+      }
+      break;
+    }
+
   }
   // LATDbits.LATD11=!LATDbits.LATD11;
   IFS0bits.T2IF = 0;              // clear interrupt flag IFS0
-  // }
 }
 
 

@@ -4,7 +4,8 @@
 #define NUMSAMPS 100                        // number of points in a waveform
 
 volatile int duty_cycle;
-volatile int kI;
+volatile int k_I;
+volatile int k_P;
 
 void PWM_init();
 void makeWaveform();

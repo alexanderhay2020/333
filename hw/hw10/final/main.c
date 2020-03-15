@@ -8,28 +8,37 @@
 
 #define BUF_SIZE 20
 
+extern volatile int duty_cycle;
+extern volatile int k_I;
+// extern volatile int kP;
+
+static volatile int counter = 0;        // initialize counter once
+static volatile int I;
+static volatile int e = 0;
+static volatile int e_int = 0;
+static volatile int StoringData = 0;    // if this flag = 1, currently storing plot data
+
+static volatile int Waveform[NUMSAMPS]; // waveform
+static volatile int I_array[NUMSAMPS];  // measured values to plot
+static volatile int REFarray[NUMSAMPS];  // reference values to plot
+
 int main() {
 
   char buffer[BUF_SIZE];
   extern volatile modes MODE;
   extern volatile int duty_cycle;
-  extern volatile int kI;
-
+  extern volatile int k_I;
 
   NU32_Startup();                           // cache on, min flash wait, interrupts on, LED/button init, UART init
   NU32_LED1 = 1;                            // turn off the LEDs
   NU32_LED2 = 1;
 
-
   __builtin_disable_interrupts();
-
   encoder_init();
   ADC_init();
   PWM_init();
-
   MODE = IDLE;
   __builtin_enable_interrupts();
-
 
   while(1) {
     NU32_ReadUART3(buffer,BUF_SIZE);        // we expect the next character to be a menu command
@@ -75,16 +84,57 @@ int main() {
       }
 
       case 'g': {                           // set current gain
-        MODE = ITEST;
+        __builtin_disable_interrupts();
+        // NU32_ReadUART3(buffer,BUF_SIZE);
+        // sscanf(buffer, "%d", &kP);
+
         NU32_ReadUART3(buffer,BUF_SIZE);
-        sscanf(buffer, "%d", &kI);
+        sscanf(buffer, "%d", &k_I);
+        __builtin_enable_interrupts();
         break;
       }
 
       case 'h': {                           // get current gain
-        MODE = ITEST;
-        sprintf(buffer,"%d\r\n", kI);
+        // MODE = ITEST;
+        sprintf(buffer,"%d\r\n", k_I);
         NU32_WriteUART3(buffer);
+        break;
+      }
+
+      case 'i': {
+        break;
+      }
+
+      case 'j': {
+        break;
+      }
+
+      case 'k':
+      {
+        __builtin_disable_interrupts();
+        makeWaveform();
+        MODE = ITEST;
+        StoringData = 1;                    // message to ISR to start storing data
+        __builtin_enable_interrupts();
+        counter = 0;
+        int i = 0;
+
+        while (StoringData) { ; }           // wait until ISR says data storing is done
+
+        MODE = IDLE;
+
+        sprintf(buffer, "%d\r\n", NUMSAMPS);
+        NU32_WriteUART3(buffer);
+
+        for (i = 0; i < NUMSAMPS; i++) {     // send plot data to MATLAB
+                                            // when first number sent = 1, MATLAB knows we're done
+          sprintf(buffer, "%d %d\r\n", REFarray[i], I_array[i]);
+          NU32_WriteUART3(buffer);
+        }
+        break;
+      }
+
+      case 'l': {
         break;
       }
 

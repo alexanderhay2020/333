@@ -23,7 +23,7 @@ fprintf('Opening port %s....\n',port);
 
 % settings for opening the serial port. baud rate 230400, hardware flow control
 % wait up to 120 seconds for data before timing out
-mySerial = serial(port, 'BaudRate', 230400, 'Timeout',10); 
+mySerial = serial(port, 'BaudRate', 230400, 'Timeout',120); 
 % opens serial connection
 fopen(mySerial);
 % closes serial port when function exits
@@ -37,7 +37,9 @@ while ~has_quit
     fprintf('     a: Read Current (counts)    b: Read Current (mA)\n');
     fprintf('     c: Read Encoder (counts)    d: Read Encoder (deg)\n');
     fprintf('     e: Reset Encoder            f: Set PWM (-100 to 100)\n'); 
-    fprintf('     g: Set Current Gains        h: Get Current Gains\n');
+    fprintf('     g: Set Current Gain         h: Get Current Gain\n');
+    fprintf('     i: Set Position Gain        j: Get Position Gain\n');
+    fprintf('     k: Test Current Gain        l: Go to angle (deg)\n');
     fprintf('     r: Get mode                 p: Unpower Motor\n');
     fprintf('     q: Quit                     x: Test\n');
     % read the user's choice
@@ -83,8 +85,22 @@ while ~has_quit
             
         case 'h'
             % get current gain
-            kI= fscanf(mySerial,'%d');
-            fprintf('%d\n',kI);
+            kI2= fscanf(mySerial,'%f');
+            fprintf('%d\n',kI2);
+            
+        case 'i'
+            % set position gain
+            kP = input('\nSet Position Gain\n');
+            fprintf(mySerial,'%d\n',kP);  
+            
+        case 'j'
+            % set position gain
+            kP2 = fscanf(mySerial,'%f');
+            fprintf(mySerial,'%d\n',kI);
+            
+        case 'k'
+            % test current gain
+            data = read_plot_matrix(mySerial);            
             
         case 'n'                         % example operation
             n = input('Enter number: '); % get the number to send
